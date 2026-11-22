@@ -15,13 +15,15 @@ let package = Package(
         .library(name: "ISO 11664", targets: ["ISO 11664"])
     ],
     dependencies: [
-        .package(url: "https://github.com/swift-iso/swift-iso-9899.git", branch: "main")
+        .package(url: "https://github.com/swift-iso/swift-iso.git", branch: "main"),
+        .package(url: "https://github.com/swift-iso/swift-iso-9899.git", branch: "main"),
     ],
     targets: [
         .target(
             name: "ISO 11664",
             dependencies: [
-                .product(name: "ISO 9899 Core", package: "swift-iso-9899")
+                .product(name: "ISO", package: "swift-iso"),
+                .product(name: "ISO 9899 Core", package: "swift-iso-9899"),
             ]
         ),
         .testTarget(

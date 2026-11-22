@@ -3,22 +3,22 @@ import Testing
 
 @testable import ISO_11664
 
-enum `ISO_11664.Observer Tests` {}
+enum `ISO.11664.Observer Tests` {}
 
-extension `ISO_11664.Observer Tests` {
+extension `ISO.11664.Observer Tests` {
     @Suite struct Test {
         @Suite struct Unit {}
     }
 }
 
-extension `ISO_11664.Observer Tests`.Test.Unit {
+extension `ISO.11664.Observer Tests`.Test.Unit {
 
     /// Every wavelength of the standard's range, 360 to 830 nm, at 0.01 nm.
     static let range = (0...47_000).map { 360 + Double($0) / 100 }
 
     @Test
     func `the luminous efficiency function peaks near 555 nanometres at about 1`() {
-        let observer = ISO_11664.Observer.analytic
+        let observer = ISO.`11664`.Observer.analytic
         let peak = Self.range.max { observer.matching(at: $0).y < observer.matching(at: $1).y }!
         #expect((553...556).contains(peak))
         #expect(abs(observer.matching(at: peak).y - 1) < 0.005)
@@ -26,7 +26,7 @@ extension `ISO_11664.Observer Tests`.Test.Unit {
 
     @Test
     func `the colour-matching functions are never negative over the standard's range`() {
-        let observer = ISO_11664.Observer.analytic
+        let observer = ISO.`11664`.Observer.analytic
         for wavelength in Self.range {
             let matching = observer.matching(at: wavelength)
             #expect(matching.x >= 0 && matching.y >= 0 && matching.z >= 0, "at \(wavelength) nm")
@@ -41,7 +41,7 @@ extension `ISO_11664.Observer Tests`.Test.Unit {
         let x = half * (1.056 * (37.9 + 31.0) + 0.362 * (16.0 + 26.7) - 0.065 * (20.4 + 26.2))
         let y = half * (0.821 * (46.9 + 40.5) + 0.286 * (16.3 + 31.1))
         let z = half * (1.217 * (11.8 + 36.0) + 0.681 * (26.0 + 13.8))
-        let sum = ISO_11664.Tristimulus(
+        let sum = ISO.`11664`.Tristimulus(
             [Double](repeating: 1, count: 471),
             from: 360,
             by: 1,
@@ -55,7 +55,7 @@ extension `ISO_11664.Observer Tests`.Test.Unit {
 
     @Test
     func `an equal-energy spectrum has nearly equal X, Y and Z`() {
-        let sum = ISO_11664.Tristimulus(
+        let sum = ISO.`11664`.Tristimulus(
             [Double](repeating: 1, count: 471),
             from: 360,
             by: 1,
@@ -71,7 +71,7 @@ extension `ISO_11664.Observer Tests`.Test.Unit {
         // parts of 400 to 700 nm and at whole nanometres from 360 to 830.
         func lobe(_ wavelength: Double, _ mean: Double, _ below: Double, _ above: Double) -> Double {
             let t = (wavelength - mean) / (wavelength < mean ? below : above)
-            return ISO_9899.Math.exp(-0.5 * t * t)
+            return ISO.`9899`.Math.exp(-0.5 * t * t)
         }
         func reference(_ w: Double) -> (Double, Double, Double) {
             (
@@ -86,7 +86,7 @@ extension `ISO_11664.Observer Tests`.Test.Unit {
         }
         let whole = (360...830).map(Double.init)
         for wavelength in midpoints + whole {
-            let matching = ISO_11664.Observer.analytic.matching(at: wavelength)
+            let matching = ISO.`11664`.Observer.analytic.matching(at: wavelength)
             let expected = reference(wavelength)
             #expect(matching.x == expected.0 && matching.y == expected.1 && matching.z == expected.2)
         }

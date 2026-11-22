@@ -1,6 +1,6 @@
 import ISO_9899_Core
 
-extension ISO_11664.Observer {
+extension ISO.`11664`.Observer {
     /// One lobe of the analytic fit: `weight · exp(−½ t²)` with `t = (λ − mean) / σ`, where σ is `below` for a
     /// wavelength under the mean and `above` otherwise.
     struct Lobe: Sendable {
@@ -11,14 +11,14 @@ extension ISO_11664.Observer {
     }
 }
 
-extension ISO_11664.Observer.Lobe {
+extension ISO.`11664`.Observer.Lobe {
     func callAsFunction(_ nanometres: Double) -> Double {
         let t = (nanometres - mean) / (nanometres < mean ? below : above)
-        return weight * ISO_9899.Math.exp(-0.5 * t * t)
+        return weight * ISO.`9899`.Math.exp(-0.5 * t * t)
     }
 }
 
-extension ISO_11664.Observer.Lobe {
+extension ISO.`11664`.Observer.Lobe {
     /// x̄: three lobes, the third negative.
     static let x = (
         Self(weight: 1.056, mean: 599.8, below: 37.9, above: 31.0),

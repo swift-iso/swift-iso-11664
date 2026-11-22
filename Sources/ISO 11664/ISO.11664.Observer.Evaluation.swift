@@ -1,4 +1,4 @@
-extension ISO_11664.Observer {
+extension ISO.`11664`.Observer {
     /// How an observer's colour-matching functions are evaluated.
     public enum Evaluation: Sendable, Hashable {
         /// The multi-lobe piecewise-Gaussian fit of Wyman, Sloan and Shirley, "Simple Analytic Approximations to
